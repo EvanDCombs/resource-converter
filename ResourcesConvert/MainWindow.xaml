@@ -1,63 +1,76 @@
-﻿<Window x:Class="ResourcesConvert.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
-    <Window.Resources>
-        <ControlTemplate x:Key="SquareButton" TargetType="{x:Type Button}">
-            <Border CornerRadius="0" BorderThickness="1"/>
-        </ControlTemplate>
-        <Style x:Key="ButtonStyle" TargetType="Button">
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-            <Setter Property="VerticalAlignment" Value="Stretch"/>
-        </Style>
-    </Window.Resources>
+        xmlns:local="clr-namespace:ResourcesConvert" x:Class="ResourcesConvert.MainWindow"
+        Title="MainWindow">
     <DockPanel 
-            HorizontalAlignment="Stretch" 
-            VerticalAlignment="Stretch"
-            LastChildFill="False">
-        <Grid 
-            Height="40" 
-            DockPanel.Dock="Top"
-            HorizontalAlignment="Stretch">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Button 
-                Content="New Resource" 
-                Grid.Column="0"
-                VerticalAlignment="Stretch"
-                HorizontalAlignment="Stretch"
-                Background="Transparent"
-                Template="{StaticResource SquareButton}"/>
-            <Button 
-                Content="Load Resource" 
-                Grid.Column="1"
-                VerticalAlignment="Stretch"
-                HorizontalAlignment="Stretch"
-                Background="Transparent"
-                Template="{StaticResource SquareButton}"/>
-            <Button 
-                Content="Save Resource" 
-                Grid.Column="2"
-                VerticalAlignment="Stretch"
-                HorizontalAlignment="Stretch"
-                Background="Transparent"
-                Template="{StaticResource SquareButton}"/>
-            <Button 
-                Content="Create Resource" 
-                Grid.Column="3"
-                VerticalAlignment="Stretch"
-                HorizontalAlignment="Stretch"
-                Background="Transparent"
-                Template="{StaticResource SquareButton}"/>
-        </Grid>
+		HorizontalAlignment="Stretch" 
+		VerticalAlignment="Stretch"
+		LastChildFill="False">
+        <ToolBarTray DockPanel.Dock="Top">
+            <ToolBar Margin="0,0,5,0">
+                <Button 
+                    Command="New" 
+                    Content="New" 
+                    Tag="new"
+                    Click="Button_Click"/>
+                <Button 
+                    Command="Open" 
+                    Content="Open"
+                    Tag="open"
+                    Click="Button_Click"/>
+                <Button 
+                    Command="Save" 
+                    Content="Save" 
+                    Tag="save"
+                    Click="Button_Click"/>
+                <Button
+                    Content="Convert" 
+                    Tag="convert"
+                    Click="Button_Click"/>
+            </ToolBar>
+            <ToolBar Margin="0,0,5,0">
+                <TextBox 
+                    x:Name="textBox" 
+                    Height="21.96" 
+                    TextWrapping="Wrap" 
+                    VerticalAlignment="Top" 
+                    Width="120"/>
+                <Button 
+                    Content="Add Column" 
+                    Tag="add_column"
+                    Click="Button_Click"/>
+                <Button 
+                    Content="Add Row" 
+                    Tag="add_row"
+                    Click="Button_Click"/>
+            </ToolBar>
+            <ToolBar Margin="0,0,5,0">
+                <Button 
+                    Content="Delete Column" 
+                    Tag="delete_column"
+                    Click="Button_Click"/>
+                <Button 
+                    Content="Delete Row" 
+                    Tag="delete_row"
+                    Click="Button_Click"/>
+            </ToolBar>
+        </ToolBarTray>
+        <DataGrid 
+			x:Name="dataGrid" 
+			DockPanel.Dock="Top" 
+			HorizontalContentAlignment="Stretch" 
+			VerticalContentAlignment="Stretch" 
+            AutoGenerateColumns="True" 
+            ColumnWidth="*"
+            SelectionMode="Single"
+            SelectionUnit="Cell"
+            CanUserAddRows="True"
+            CanUserDeleteRows="True"
+            CanUserResizeColumns="True"/>
         <StatusBar 
-                DockPanel.Dock="Bottom"
-                Height="25"
-                HorizontalAlignment="Stretch"/>
+			DockPanel.Dock="Bottom"
+			Height="25"
+			HorizontalAlignment="Stretch"/>
     </DockPanel>
 </Window>
