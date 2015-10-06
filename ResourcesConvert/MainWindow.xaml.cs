@@ -1,18 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Controls.Primitives;
+using System.Reflection;
 
 namespace ResourcesConvert
 {
@@ -21,14 +12,28 @@ namespace ResourcesConvert
     /// </summary>
     public partial class MainWindow : Window
     {
-        private ResourceManager resourceManager;
-
+        #region Fields
+        private Type bindableType;
+        private List<Property> properties;
+        private ObservableCollection<dynamic> resources;
+        #endregion
+        #region Properties
+        private dynamic NewResource { get { return ResourceTypeGenerator.CreateResourceObject(bindableType); } }
+        #endregion
+        #region Initialization
         public MainWindow()
         {
             InitializeComponent();
-            resourceManager = new ResourceManager();
-            dataGrid.ItemsSource = resourceManager.Resources;
+            resources = new ObservableCollection<dynamic>();
+            properties = new List<Property>();
+            properties.Add(new Property("Name", typeof(string)));
+            properties.Add(new Property("Default", typeof(string)));
+            bindableType = ResourceTypeGenerator.CreateResourceType(properties);
+            resources.Add(NewResource);
+            dataGrid.ItemsSource = resources;
         }
+        #endregion
+        #region Methods
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
@@ -43,53 +48,57 @@ namespace ResourcesConvert
                 case "convert":
                     break;
                 case "add_column":
-                    dataGrid.ItemsSource = resourceManager.AddColumn(textBox.Text);
+                    AddColumn(textBox.Text);
+                    dataGrid.ItemsSource = resources;
                     textBox.Clear();
                     break;
                 case "add_row":
-                    resourceManager.AddResourceItem();
+                    resources.Add(NewResource);
                     break;
             }
         }
-        private static T GetVisualChild<T>(Visual parent) where T : Visual
+        public void AddColumn(string column)
         {
-            T child = default(T);
-            int numVisuals = VisualTreeHelper.GetChildrenCount(parent);
-            for (int i = 0; i < numVisuals; i++)
-            {
-                Visual v = (Visual)VisualTreeHelper.GetChild(parent, i);
-                child = v as T;
-                if (child == null) child = GetVisualChild<T>(v);
-                if (child != null) break;
-            }
-            return child;
-        }
+            PropertyInfo[] oldProperties = bindableType.GetProperties();
 
-        private void dataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
-        {
-            DataGrid dataGrid = (DataGrid)sender;
-            DataGridRow dataGridRow = e.Row;
-            if (dataGridRow != null)
+            properties.Add(new Property(column, typeof(string)));
+            bindableType = ResourceTypeGenerator.CreateResourceType(properties);
+            PropertyInfo[] newProperties = bindableType.GetProperties();
+
+            ObservableCollection<dynamic> temp = new ObservableCollection<dynamic>();
+            foreach (dynamic oldResource in resources)
             {
-                DataGridCellsPresenter presenter = GetVisualChild<DataGridCellsPresenter>(dataGridRow);
-                DataGridCell cell = (DataGridCell)presenter.ItemContainerGenerator.ContainerFromIndex(0);
-                if (cell != null)
+                dynamic newResource = NewResource;
+                foreach (PropertyInfo oldProperty in oldProperties)
                 {
-                    DataGridColumn column = e.Column;
-                    string text = ((TextBox)cell.Content).Text;
-                    int row = dataGridRow.GetIndex();
-                    string language = (string)column.Header;
-                    //resourceManager.ChangeResource(row, language, text);
+                    foreach (PropertyInfo newProperty in newProperties)
+                    {
+                        if (oldProperty.Name == newProperty.Name)
+                        {
+                            newProperty.SetValue(newResource, oldProperty.GetValue(oldResource));
+                            break;
+                        }
+                    }
                 }
+                temp.Add(newResource);
             }
-        }
 
-        private void dataGrid_LostFocus(object sender, RoutedEventArgs e)
-        {
-            DataGrid dataGrid = (DataGrid)sender;
-            DataGridCellsPresenter presenter = GetVisualChild<DataGridCellsPresenter>(dataGrid);
-            DataGridCell cell = (DataGridCell)presenter.ItemContainerGenerator.ContainerFromIndex(0);
-            cell.IsEditing = false;
+            resources = temp;
         }
+        private void DockPanel_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            dataGrid.CommitEdit();
+        }
+        private void SaveAsAndroidResource()
+        { }
+        private void SaveAsIOSResources()
+        { }
+        private void SaveAsWinResource()
+        { }
+        private void SaveAsConvertableResource()
+        {
+
+        }
+        #endregion
     }
 }

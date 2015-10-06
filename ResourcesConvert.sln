@@ -5,10 +5,6 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResourcesConvert", "ResourcesConvert\ResourcesConvert.csproj", "{56869EE2-F90D-4058-8378-B6E4A7C2E7DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomHelper", "C:\Users\Evan\Desktop\CustomTypeProviderSample\CustomTypeProviderSample\CustomHelper\CustomHelper.csproj", "{C7B492D3-249C-48FC-8F32-053720DD20F0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomTypeProviderSample", "C:\Users\Evan\Desktop\CustomTypeProviderSample\CustomTypeProviderSample\CustomTypeProviderSample\CustomTypeProviderSample.csproj", "{E6C27A1D-47BE-4419-82DC-F936D5E02315}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,14 +15,6 @@ Global
 		{56869EE2-F90D-4058-8378-B6E4A7C2E7DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56869EE2-F90D-4058-8378-B6E4A7C2E7DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56869EE2-F90D-4058-8378-B6E4A7C2E7DF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C7B492D3-249C-48FC-8F32-053720DD20F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C7B492D3-249C-48FC-8F32-053720DD20F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C7B492D3-249C-48FC-8F32-053720DD20F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C7B492D3-249C-48FC-8F32-053720DD20F0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E6C27A1D-47BE-4419-82DC-F936D5E02315}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E6C27A1D-47BE-4419-82DC-F936D5E02315}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E6C27A1D-47BE-4419-82DC-F936D5E02315}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E6C27A1D-47BE-4419-82DC-F936D5E02315}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
