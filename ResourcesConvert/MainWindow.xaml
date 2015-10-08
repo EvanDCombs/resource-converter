@@ -10,19 +10,16 @@
 		LastChildFill="False"
         PreviewMouseDown="DockPanel_PreviewMouseDown">
         <ToolBarTray DockPanel.Dock="Top">
-            <ToolBar Margin="0,0,5,0">
+            <ToolBar>
                 <Button 
-                    Command="New" 
                     Content="New" 
                     Tag="new"
                     Click="Button_Click"/>
                 <Button 
-                    Command="Open" 
                     Content="Open"
                     Tag="open"
                     Click="Button_Click"/>
                 <Button 
-                    Command="Save" 
                     Content="Save" 
                     Tag="save"
                     Click="Button_Click"/>
@@ -31,7 +28,17 @@
                     Tag="convert"
                     Click="Button_Click"/>
             </ToolBar>
-            <ToolBar Margin="0,0,5,0">
+            <ToolBar>
+                <Button 
+                    Content="Add Row" 
+                    Tag="add_row"
+                    Click="Button_Click"/>
+                <Button 
+                    Content="Delete Row" 
+                    Tag="delete_row"
+                    Click="Button_Click"/>
+            </ToolBar>
+            <ToolBar>
                 <TextBox 
                     x:Name="textBox" 
                     Height="21.96" 
@@ -42,19 +49,15 @@
                     Content="Add Column" 
                     Tag="add_column"
                     Click="Button_Click"/>
-                <Button 
-                    Content="Add Row" 
-                    Tag="add_row"
-                    Click="Button_Click"/>
             </ToolBar>
-            <ToolBar Margin="0,0,5,0">
+            <ToolBar>
+                <ComboBox 
+                    x:Name="comboBox" 
+                    Height="22" 
+                    Width="120"/>
                 <Button 
                     Content="Delete Column" 
                     Tag="delete_column"
-                    Click="Button_Click"/>
-                <Button 
-                    Content="Delete Row" 
-                    Tag="delete_row"
                     Click="Button_Click"/>
             </ToolBar>
         </ToolBarTray>

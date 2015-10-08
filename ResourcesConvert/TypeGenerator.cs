@@ -1,22 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Reflection;
 using System.Reflection.Emit;
 
 namespace ResourcesConvert
 {
-    public static class ResourceTypeGenerator
+    public static class TypeGenerator
     {
         public static dynamic CreateResourceObject(Type type)
         {
             return Activator.CreateInstance(type);
         }
-        public static Type CreateResourceType(List<Property> list)
+        public static Type CreateResourceType(List<Property> list, string signature)
         {
-            TypeBuilder tb = GetTypeBuilder();
+            TypeBuilder tb = GetTypeBuilder(signature);
             ConstructorBuilder constructor = tb.DefineDefaultConstructor(MethodAttributes.Public | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName);
 
             foreach (Property property in list)
@@ -26,9 +23,8 @@ namespace ResourcesConvert
             Type objectType = tb.CreateType();
             return objectType;
         }
-        private static TypeBuilder GetTypeBuilder()
+        private static TypeBuilder GetTypeBuilder(string signature)
         {
-            string signature = "signature";
             AssemblyName assemblyName = new AssemblyName(signature);
             AssemblyBuilder assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
             ModuleBuilder moduleBuilder = assemblyBuilder.DefineDynamicModule("MainModule");
