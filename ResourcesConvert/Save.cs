@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Xml;
 using System.Reflection;
 using System.Text;
+using System.IO;
 using ResourcesConvert.Properties;
 
 namespace ResourcesConvert
@@ -18,6 +19,7 @@ namespace ResourcesConvert
         private delegate XmlScript CreateXmlScript();
         private delegate void CreateXmlScriptResource(string key, KeyValuePair<string, string> pair, XmlScript resourceFile);
         private delegate void CreateStringBuilderResource(string key, KeyValuePair<string, string> pair, StringBuilder resourceFile);
+        private delegate string CreateGeneratedCSharp(string key);
 
         public static void AndroidResource(string filepath, ObservableCollection<dynamic> resources)
         {
@@ -33,7 +35,7 @@ namespace ResourcesConvert
 
             SaveFiles(filepath, "//strings-", ".xml", resourceFiles);
         }
-        public static void iOSResources(string filepath, ObservableCollection<dynamic> resources)
+        public static void iOSResources(string filepath, string cSharpNameSpace, ObservableCollection<dynamic> resources)
         {
             filepath = filepath + "//iOS";
             //gets all properties of a Resource
@@ -46,8 +48,11 @@ namespace ResourcesConvert
             CreateResources(resourceList, resourceFiles, CreateiOSResource);
 
             SaveFiles(filepath, "//Localizable_", ".strings", resourceFiles);
+
+            StringBuilder generated = GenerateCSharp(resourceList, "GeneratediOSBoilerplate.txt", cSharpNameSpace, GenerateiOSCSharp);
+            SaveGeneratedCSharp(filepath, "//Strings", generated);
         }
-        public static void WinResource(string filepath, ObservableCollection<dynamic> resources)
+        public static void WinResource(string filepath, string cSharpNameSpace, ObservableCollection<dynamic> resources)
         {
             filepath = filepath + "//Win";
             //gets all properties of a Resource
@@ -59,6 +64,9 @@ namespace ResourcesConvert
             CreateResources(resourceList, resourceFiles, CreateWinResource);
 
             SaveFiles(filepath, "//strings-", ".resx", resourceFiles);
+
+            StringBuilder generated = GenerateCSharp(resourceList, "GeneratedWinBoilerplate.txt", cSharpNameSpace, GenerateWinCSharp);
+            SaveGeneratedCSharp(filepath, "//Strings", generated);
         }
         public static void ConvertableResource(string filepath, ObservableCollection<dynamic> resources)
         {
@@ -117,7 +125,7 @@ namespace ResourcesConvert
         {
             XmlScript xmlScript = new XmlScript();
             Uri uri = new Uri("/WinResource.xml", UriKind.RelativeOrAbsolute);
-            using (System.IO.Stream stream = System.Windows.Application.GetResourceStream(uri).Stream)
+            using (Stream stream = System.Windows.Application.GetResourceStream(uri).Stream)
             {
                 xmlScript.Load(stream);
             }
@@ -172,7 +180,7 @@ namespace ResourcesConvert
         private static void CreateiOSResource(string key, KeyValuePair<string, string> pair, StringBuilder resourceFile)
         {
             StringBuilder stringBuilder = resourceFile;
-            stringBuilder.AppendLine("\"" + key + "\"=\"" + pair.Value + "\"");
+            stringBuilder.AppendLine("\"" + key + "\"=\"" + pair.Value + "\";");
         }
         private static void CreateWinResource(string key, KeyValuePair<string, string> pair, XmlScript resourceFile)
         {
@@ -181,6 +189,39 @@ namespace ResourcesConvert
             XmlScript.XmlAttribute(dataElement, "name", key);
             XmlScript.XmlAttribute(dataElement, "xml:space", "preserve");
             XmlScript.XmlElementWithText(script, dataElement, "value", pair.Value);
+        }
+
+        private static StringBuilder GenerateCSharp(List<Dictionary<string, string>> resourceList, string filename, string csNamespace, CreateGeneratedCSharp generateCSharp)
+        {
+            StringBuilder csharp = new StringBuilder();
+            csharp.AppendLine("");
+            foreach (Dictionary<string, string> dictionary in resourceList)
+            {
+                string key = dictionary["Name"];
+                string generated = generateCSharp(key);
+                csharp.AppendLine(generated);
+            }
+            StringBuilder boilerplate = new StringBuilder();
+            Uri uri = new Uri(filename, UriKind.RelativeOrAbsolute);
+            using (Stream stream = System.Windows.Application.GetResourceStream(uri).Stream)
+            {
+                using (StreamReader streamReader = new StreamReader(stream))
+                {
+                    boilerplate.Append(streamReader.ReadToEnd());
+                }
+            }
+            boilerplate.Replace("[NAMESPACE]", csNamespace);
+            boilerplate.Replace("[PLACE CSHARP HERE]", csharp.ToString());
+            return boilerplate;
+        }
+
+        private static string GenerateiOSCSharp(string key)
+        {
+           return Indent(2) + "public static string " + key + " { get { return NSBundle.MainBundle.LocalizedString(" + key + ", null); } }";
+        }
+        private static string GenerateWinCSharp(string key)
+        {
+            return Indent(2) + "internal static string " + key + " { get { return ResourceManager.GetString(" + key + ", resourceCulture); } }";
         }
 
         private static void SaveFiles(string filepath, string filename, string extension, Dictionary<string, XmlScript> resourceFiles)
@@ -198,6 +239,18 @@ namespace ResourcesConvert
             {
                 FileManager.WriteLocalFile(filepath + filename + pair.Key + extension, pair.Value.ToString());
             }
+        }
+        private static void SaveGeneratedCSharp(string filepath, string filename, StringBuilder generatedCSharp)
+        {
+            FileManager.CreateDirectory(filepath);
+            FileManager.WriteLocalFile(filepath + filename + ".cs", generatedCSharp.ToString());
+        }
+
+
+
+        private static string Indent(int count)
+        {
+            return new string(' ', count * 4);
         }
     }
 }

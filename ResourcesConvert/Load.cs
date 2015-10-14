@@ -46,6 +46,7 @@ namespace ResourcesConvert
                     dict.Add(xPathNavigator.Name, xPathNavigator.Value);
                 }
             }
+            xPathNavigator.MoveToParent();
 
             return dict;
         }

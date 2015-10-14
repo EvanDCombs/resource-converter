@@ -36,8 +36,9 @@ namespace ResourcesConvert
                     break;
                 case "open":
                     currentFile = FileManager.OpenFileLocator(false, EXTENSION)[0];
-                    Load.ConvertableResource(currentFile);
+                    resources = Load.ConvertableResource(currentFile);
                     dataGrid.ItemsSource = resources;
+                    SetComboBoxItems(Resource.PropertyNames);
                     break;
                 case "save":
                     if (string.IsNullOrEmpty(currentFile))
@@ -54,12 +55,15 @@ namespace ResourcesConvert
                     Save.ConvertableResource(currentFile, resources);
                     string folderPath = FileManager.OpenDirectoryLocator();
                     Save.AndroidResource(folderPath, resources);
-                    Save.iOSResources(folderPath, resources);
-                    Save.WinResource(folderPath, resources);
+                    Save.iOSResources(folderPath, namespaceTextBox.Text, resources);
+                    Save.WinResource(folderPath, namespaceTextBox.Text, resources);
                     break;
                 case "add_column":
-                    AddColumn(textBox.Text);
-                    textBox.Clear();
+                    if (!string.IsNullOrEmpty(textBox.Text))
+                    {
+                        AddColumn(textBox.Text);
+                        textBox.Clear();
+                    }
                     break;
                 case "add_row":
                     resources.Add(Resource.NewResource);

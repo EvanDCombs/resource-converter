@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:ResourcesConvert" 
         x:Class="ResourcesConvert.MainWindow"
-        Title="MainWindow">
+        Title="Resource Converter">
     <DockPanel 
 		HorizontalAlignment="Stretch" 
 		VerticalAlignment="Stretch"
@@ -59,6 +59,18 @@
                     Content="Delete Column" 
                     Tag="delete_column"
                     Click="Button_Click"/>
+            </ToolBar>
+            <ToolBar>
+                <Label 
+                    Content="Namespace" 
+                    Height="26" 
+                    VerticalAlignment="Top"/>
+                <TextBox 
+                    x:Name="namespaceTextBox" 
+                    Height="21.96" 
+                    TextWrapping="Wrap" 
+                    VerticalAlignment="Top" 
+                    Width="120"/>
             </ToolBar>
         </ToolBarTray>
         <DataGrid 
