@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -14,7 +15,11 @@ namespace ResourcesConvert
         private const string EXTENSION = ".xrc";
         #endregion
         #region Fields
+        private bool IsEditing;
+        private bool IsDragging;
         private string currentFile;
+        private dynamic DraggedItem;
+        private DataGridColumn column;
         private ObservableCollection<dynamic> resources;
         #endregion
         #region Initialization
@@ -71,6 +76,16 @@ namespace ResourcesConvert
                 case "delete_row":
                     resources.Remove(dataGrid.SelectedCells[0].Item);
                     break;
+                case "sort_row":
+                    List<dynamic> list = resources.OrderBy(x => x.Name).ToList<dynamic>();
+                    ObservableCollection<dynamic> oc = new ObservableCollection<dynamic>();
+                    foreach (dynamic item in list)
+                    {
+                        oc.Add(item);
+                    }
+                    resources = oc;
+                    dataGrid.ItemsSource = resources;
+                    break;
                 case "delete_column":
                     DeleteColumn(comboBox.SelectedIndex);
                     break;
@@ -117,6 +132,54 @@ namespace ResourcesConvert
             {
                 comboBox.Items.Add(columns[i]);
             }
+        }
+        #endregion
+        #region Drag and Drop
+        private void dataGrid_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
+        {
+            IsEditing = true;
+            if (IsDragging)
+            {
+                ResetDragDrop();  
+            }
+        }
+        private void dataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            IsEditing = false;
+        }
+        private void ResetDragDrop()
+        {
+            IsDragging = false;
+            dataGrid.IsReadOnly = false;
+        }
+        private void dataGrid_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (IsEditing)
+            {
+                return;
+            }
+            DataGridRow row = UIHelper.TryFindFromPoint<DataGridRow>((UIElement)sender, e.GetPosition(dataGrid));
+            if (row != null)
+            {
+                IsDragging = true;
+                DraggedItem = (dynamic)row.Item;
+            }
+        }
+        private void dataGrid_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (IsDragging)
+            {
+                dataGrid.IsReadOnly = true;
+                DataGridRow row = UIHelper.TryFindFromPoint<DataGridRow>((UIElement)sender, e.GetPosition(dataGrid));
+                dynamic targetItem = (dynamic)row.Item;
+                if (targetItem != null && !ReferenceEquals(DraggedItem, targetItem))
+                {
+                    int index = resources.IndexOf(targetItem);
+                    resources.Remove(DraggedItem);
+                    resources.Insert(index, DraggedItem);
+                }
+            }
+            ResetDragDrop();
         }
         #endregion
     }

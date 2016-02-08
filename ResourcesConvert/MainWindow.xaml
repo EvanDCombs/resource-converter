@@ -37,6 +37,10 @@
                     Content="Delete Row" 
                     Tag="delete_row"
                     Click="Button_Click"/>
+                <Button 
+                    Content="Sort Rows" 
+                    Tag="sort_row"
+                    Click="Button_Click"/>
             </ToolBar>
             <ToolBar>
                 <TextBox 
@@ -81,10 +85,13 @@
             AutoGenerateColumns="True" 
             ColumnWidth="*"
             SelectionMode="Single"
-            SelectionUnit="Cell"
-            CanUserAddRows="True"
-            CanUserDeleteRows="True"
-            CanUserResizeColumns="True"/>
+            SelectionUnit="CellOrRowHeader"
+            CanUserResizeColumns="True"
+            CanUserSortColumns="False"
+            BeginningEdit="dataGrid_BeginningEdit"
+            CellEditEnding="dataGrid_CellEditEnding"
+            PreviewMouseLeftButtonDown="dataGrid_PreviewMouseLeftButtonDown"
+            MouseLeftButtonUp="dataGrid_MouseLeftButtonUp"/>
         <StatusBar 
             Name="statusBar"
 			DockPanel.Dock="Bottom"

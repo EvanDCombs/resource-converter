@@ -50,10 +50,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>C2717E7F8F97BCBE94AC4F363FEE0D20BD7CED8C</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>EDC9066BD5B94BF76C1D251C9EF1676D6CEB1152</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>ResourcesConvert_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>ResourcesConvert_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -87,6 +87,7 @@
     <Compile Include="Resource.cs" />
     <Compile Include="TypeGenerator.cs" />
     <Compile Include="Save.cs" />
+    <Compile Include="UIHelper.cs" />
     <Compile Include="XmlScript.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -125,6 +126,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="ResourcesConvert_1_TemporaryKey.pfx" />
     <None Include="ResourcesConvert_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
