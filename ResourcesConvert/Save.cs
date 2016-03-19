@@ -217,11 +217,11 @@ namespace ResourcesConvert
 
         private static string GenerateiOSCSharp(string key)
         {
-           return Indent(2) + "public static string " + key + " { get { return NSBundle.MainBundle.LocalizedString(" + key + ", null); } }";
+           return Indent(2) + "public static string " + key + " { get { return NSBundle.MainBundle.LocalizedString(\"" + key + "\", null); } }";
         }
         private static string GenerateWinCSharp(string key)
         {
-            return Indent(2) + "internal static string " + key + " { get { return ResourceManager.GetString(" + key + ", resourceCulture); } }";
+            return Indent(2) + "internal static string " + key + " { get { return ResourceManager.GetString(\"" + key + "\", resourceCulture); } }";
         }
 
         private static void SaveFiles(string filepath, string filename, string extension, Dictionary<string, XmlScript> resourceFiles)
