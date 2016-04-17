@@ -1,0 +1,13 @@
+﻿[USING STATEMENTS]
+
+namespace [NAMESPACE]
+{
+	public partial class Strings
+	{
+		public static Context Context { get; set;}
+		static partial void GetStringPartial(string name, ref string value)
+		{
+			[GET STRING]
+		}
+	}
+}

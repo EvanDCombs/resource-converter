@@ -57,11 +57,12 @@ namespace ResourcesConvert
                     {
                         currentFile = FileManager.SaveFileLocator(EXTENSION);
                     }
-                    Save.ConvertableResource(currentFile, resources);
+                    ConvertToConvertable.Instance.CreateFiles(currentFile, "", resources);
                     string folderPath = FileManager.OpenDirectoryLocator();
-                    Save.AndroidResource(folderPath, resources);
-                    Save.iOSResources(folderPath, namespaceTextBox.Text, resources);
-                    Save.WinResource(folderPath, namespaceTextBox.Text, resources);
+                    ConvertToAndroid.Instance.CreateFiles(currentFile, namespaceTextBox.Text, resources);
+                    ConvertToiOS.Instance.CreateFiles(currentFile, namespaceTextBox.Text, resources);
+                    ConvertToWin.Instance.CreateFiles(currentFile, namespaceTextBox.Text, resources);
+                    ConvertToShared.Instance.CreateFiles(currentFile, namespaceTextBox.Text, resources);
                     break;
                 case "add_column":
                     if (!string.IsNullOrEmpty(textBox.Text))

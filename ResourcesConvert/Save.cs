@@ -224,7 +224,7 @@ namespace ResourcesConvert
             return Indent(2) + "internal static string " + key + " { get { return ResourceManager.GetString(\"" + key + "\", resourceCulture); } }";
         }
 
-        private static void SaveFiles(string filepath, string filename, string extension, Dictionary<string, XmlScript> resourceFiles)
+        public static void SaveFiles(string filepath, string filename, string extension, Dictionary<string, XmlScript> resourceFiles)
         {
             FileManager.CreateDirectory(filepath);
             foreach (KeyValuePair<string, XmlScript> pair in resourceFiles)
@@ -232,7 +232,7 @@ namespace ResourcesConvert
                 pair.Value.Save(filepath + filename + pair.Key + extension);
             }
         }
-        private static void SaveFiles(string filepath, string filename, string extension, Dictionary<string, StringBuilder> resourceFiles)
+        public static void SaveFiles(string filepath, string filename, string extension, Dictionary<string, StringBuilder> resourceFiles)
         {
             FileManager.CreateDirectory(filepath);
             foreach (KeyValuePair<string, StringBuilder> pair in resourceFiles)
@@ -240,7 +240,7 @@ namespace ResourcesConvert
                 FileManager.WriteLocalFile(filepath + filename + pair.Key + extension, pair.Value.ToString());
             }
         }
-        private static void SaveGeneratedCSharp(string filepath, string filename, StringBuilder generatedCSharp)
+        public static void SaveGeneratedCSharp(string filepath, string filename, StringBuilder generatedCSharp)
         {
             FileManager.CreateDirectory(filepath);
             FileManager.WriteLocalFile(filepath + filename + ".cs", generatedCSharp.ToString());

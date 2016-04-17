@@ -62,6 +62,9 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DeadDodo">
+      <HintPath>..\..\..\..\Libraries\DeadDodo\DLL\DeadDodo.Droid\DeadDodo.Droid\DeadDodo.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Forms" />
@@ -82,6 +85,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ConvertTo.cs" />
+    <Compile Include="ConvertToAndroid.cs" />
+    <Compile Include="ConvertToConvertable.cs" />
+    <Compile Include="ConvertToiOS.cs" />
+    <Compile Include="ConvertToShared.cs" />
+    <Compile Include="ConvertToWin.cs" />
     <Compile Include="FileManager.cs" />
     <Compile Include="Load.cs" />
     <Compile Include="Resource.cs" />
@@ -152,6 +161,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="GeneratedWinBoilerplate.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="csharp_strings.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="cSharp_strings_shared.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
