@@ -12,7 +12,7 @@ namespace ResourcesConvert
     public class ConvertToConvertable : ConvertTo
     {
         #region Properties
-        protected override string ResourceFileName { get { return ""; } }
+        protected override string ResourceFileName { get { return "//"; } }
         protected override string CSharpFileName { get { return "Strings"; } }
         protected override string Folder { get { return "//Shared"; } }
         protected override string GetString { get { return "GetStringPartial(name, ref value"; } }

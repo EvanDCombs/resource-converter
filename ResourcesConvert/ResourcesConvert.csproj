@@ -14,7 +14,7 @@
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>publish\</PublishUrl>
+    <PublishUrl>D:\Projects\Apps\Publish\ResourcesConverter\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -24,7 +24,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>3</ApplicationRevision>
+    <ApplicationRevision>4</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -50,21 +50,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>EDC9066BD5B94BF76C1D251C9EF1676D6CEB1152</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>C067281F2B554ABCF321E08FD5711EA8438C3F08</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>ResourcesConvert_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DeadDodo">
-      <HintPath>..\..\..\..\Libraries\DeadDodo\DLL\DeadDodo.Droid\DeadDodo.Droid\DeadDodo.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Forms" />
@@ -95,7 +93,6 @@
     <Compile Include="Load.cs" />
     <Compile Include="Resource.cs" />
     <Compile Include="TypeGenerator.cs" />
-    <Compile Include="Save.cs" />
     <Compile Include="UIHelper.cs" />
     <Compile Include="XmlScript.cs" />
     <Page Include="MainWindow.xaml">
@@ -135,8 +132,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="ResourcesConvert_1_TemporaryKey.pfx" />
-    <None Include="ResourcesConvert_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -157,16 +152,13 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="GeneratediOSBoilerplate.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="GeneratedWinBoilerplate.txt" />
+    <Resource Include="csharp_strings_dependencies_win.txt" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="csharp_strings.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="cSharp_strings_shared.txt" />
+    <Resource Include="csharp_strings_shared.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

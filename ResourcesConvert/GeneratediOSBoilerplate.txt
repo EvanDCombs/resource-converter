@@ -1,9 +1,0 @@
-﻿using Foundation;
-
-namespace [NAMESPACE]
-{
-	public partial class Strings
-	{
-		[PLACE CSHARP HERE]
-	}
-}

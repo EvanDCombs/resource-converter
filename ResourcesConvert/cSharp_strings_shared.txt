@@ -4,11 +4,7 @@ namespace [NAMESPACE]
 {
 	public partial class Strings
 	{
-		#region Partial Methods
 		static partial void GetStringPartial(string name, ref string value);
-		#endregion
-		#region Get
 		[CSHARP]
-		#endregion
 	}
 }

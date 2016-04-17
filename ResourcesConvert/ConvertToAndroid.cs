@@ -17,9 +17,10 @@ namespace ResourcesConvert
         #endregion
         #region Properties
         protected override string ResourceFileName { get { return "//strings-"; } }
-        protected override string CSharpFileName { get { return "Strings"; } }
+        protected override string CSharpFileName { get { return "//Strings"; } }
         protected override string Folder { get { return "//Android"; } }
-        protected override string GetString { get { return "value = Context.Resources.GetString(Context.Resources.GetIdentifier(name, /string/, Context.PackageName));"; } }
+        protected override string GetString { get { return "value = Context.Resources.GetString(Context.Resources.GetIdentifier(name, \"string\", Context.PackageName));"; } }
+        protected override string Dependencies { get { return "public static Context Context { get; set;}"; } }
         protected override StringBuilder UsingStatements { get { return new StringBuilder("using Android.Content"); } }
         #endregion
         #region Initialization
@@ -42,7 +43,7 @@ namespace ResourcesConvert
         #region Methods
         protected override string GetResourceString(string key, string value)
         {
-            return "<string name=\"" + key + "\">" + value + "</string>";
+            return Indent(1) + "<string name=\"" + key + "\">" + value + "</string>";
         }
         protected override void SaveFile(string filepath, string filename, string extension, StringBuilder data)
         {

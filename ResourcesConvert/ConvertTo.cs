@@ -6,21 +6,22 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using DeadDodo;
 
 namespace ResourcesConvert
 {
-    public abstract class ConvertTo : DDObject
+    public abstract class ConvertTo
     {
         #region Const Fields
         protected const string XML_EXTENSION = ".xml";
         protected const string STRINGS_EXTENSION = ".strings";
+        protected const string RESX_EXTENSION = ".resx";
         protected const string CSHARP_EXTENSION = ".cs";
         protected const string PROPERTY_NAME = "Name";
         protected const string NAMESPACE = "[NAMESPACE]";
         protected const string CSHARP = "[CSHARP]";
         protected const string GET_STRING = "[GET STRING]";
         protected const string USING_STATEMENTS = "[USING STATEMENTS]";
+        protected const string DEPENDENCIES = "[DEPENDENCIES]";
         #endregion
         #region Properties
         protected abstract string ResourceFileName { get; }
@@ -29,6 +30,7 @@ namespace ResourcesConvert
         protected abstract string GetString { get; }
         protected abstract StringBuilder UsingStatements { get; }
         protected virtual string ResourceFileExtention { get { return XML_EXTENSION; } }
+        protected virtual string Dependencies { get { return ""; } }
         public StringBuilder CSharpText { get; protected set; }
         protected Dictionary<string, StringBuilder> Languages { get; set; }
         #endregion
@@ -57,6 +59,10 @@ namespace ResourcesConvert
             }
             return list;
         }
+        protected string Indent(float count)
+        {
+            return new string(' ', (int)(count * 4));
+        }
         #endregion
         #region Virtual Methods
         public virtual void CreateFiles(string filepath, string nameSpace, ObservableCollection<dynamic> resources)
@@ -71,23 +77,27 @@ namespace ResourcesConvert
             Dictionary<string, StringBuilder>.KeyCollection languageKeys = Languages.Keys;
             for (int i = 0; i < languageKeys.Count; i++)
             {
-                Languages[languageKeys.ElementAt(i)] = CreateResourceFile(resources[i]);
+                Languages[languageKeys.ElementAt(i)] = CreateResourceFile(resources);
             }
 
             StringBuilder cSharpFile = CreateCSharpFile(resources, nameSpace);
 
             SaveFiles(filepath, Languages, cSharpFile);
         }
-        protected virtual StringBuilder CreateResourceFile(Dictionary<string, string> resources)
+        protected virtual StringBuilder CreateResourceFile(List<Dictionary<string, string>> resources)
         {
             StringBuilder sb = new StringBuilder();
+            sb.AppendLine("");
 
-            string key = resources[PROPERTY_NAME];
-            foreach (KeyValuePair<string, string> pair in resources)
+            foreach (Dictionary<string, string> dictionary in resources)
             {
-                if (pair.Key != PROPERTY_NAME)
+                string key = dictionary[PROPERTY_NAME];
+                foreach (KeyValuePair<string, string> pair in dictionary)
                 {
-                    sb.AppendLine(GetResourceString(key, pair.Value));
+                    if (pair.Key != PROPERTY_NAME)
+                    {
+                        sb.AppendLine(GetResourceString(key, pair.Value));
+                    }
                 }
             }
 
@@ -106,6 +116,7 @@ namespace ResourcesConvert
                 }
             }
 
+            sb.Replace(DEPENDENCIES, Dependencies);
             sb.Replace(NAMESPACE, nameSpace);
             sb.Replace(GET_STRING, GetString);
             sb.Replace(USING_STATEMENTS, UsingStatements.ToString());

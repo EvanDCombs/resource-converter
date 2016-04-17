@@ -13,9 +13,28 @@ namespace ResourcesConvert
     {
         #region Properties
         protected override string ResourceFileName { get { return "//strings-"; } }
-        protected override string CSharpFileName { get { return "Strings"; } }
+        protected override string CSharpFileName { get { return "//Strings"; } }
         protected override string Folder { get { return "//Win"; } }
-        protected override string GetString { get { return "ResourceManager.GetString(\"name\", resourceCulture);"; } }
+        protected override string GetString { get { return " value = ResourceManager.GetString(\"name\", resourceCulture);"; } }
+        protected override string ResourceFileExtention { get { return RESX_EXTENSION; } }
+        protected override string Dependencies
+        {
+            get
+            {
+                StringBuilder sb = new StringBuilder();
+
+                Uri uri = new Uri("csharp_strings_dependencies_win.txt", UriKind.RelativeOrAbsolute);
+                using (Stream stream = System.Windows.Application.GetResourceStream(uri).Stream)
+                {
+                    using (StreamReader streamReader = new StreamReader(stream))
+                    {
+                        sb.Append(streamReader.ReadToEnd());
+                    }
+                }
+
+                return sb.ToString();
+            }
+        }
         protected override StringBuilder UsingStatements { get { return new StringBuilder("using System"); } }
         #endregion
         #region Initialization
@@ -37,9 +56,9 @@ namespace ResourcesConvert
         protected override string GetResourceString(string key, string value)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("<data name=\"" + key + "\" xml:space=\"preserve\">");
-            sb.AppendLine("<value>" + value + "</value>");
-            sb.AppendLine("</data>");
+            sb.AppendLine(Indent(0.5f) + "<data name=\"" + key + "\" xml:space=\"preserve\">");
+            sb.AppendLine(Indent(1) + "<value>" + value + "</value>");
+            sb.AppendLine(Indent(0.5f) + "</data>");
             return sb.ToString();
         }
         protected override void SaveFile(string filepath, string filename, string extension, StringBuilder data)
@@ -68,7 +87,7 @@ namespace ResourcesConvert
             //Add StringBuilder Lines to XML
             XmlDocumentFragment fragment = xmlScript.CreateDocumentFragment();
             fragment.InnerXml = stringBuilder.ToString();
-            xmlScript.FirstChild.AppendChild(fragment);
+            xmlScript.DocumentElement.AppendChild(fragment);
 
             return xmlScript;
         }

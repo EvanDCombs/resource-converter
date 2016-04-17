@@ -11,9 +11,9 @@ namespace ResourcesConvert
     {
         #region Properties
         protected override string ResourceFileName { get { return "//Localizable_"; } }
-        protected override string CSharpFileName { get { return "Strings"; } }
+        protected override string CSharpFileName { get { return "//Strings"; } }
         protected override string Folder { get { return "//iOS"; } }
-        protected override string GetString { get { return "NSBundle.MainBundle.LocalizedString(\"name\", null);"; } }
+        protected override string GetString { get { return "value = NSBundle.MainBundle.LocalizedString(\"name\", null);"; } }
         protected override string ResourceFileExtention { get { return STRINGS_EXTENSION; } }
         protected override StringBuilder UsingStatements { get { return new StringBuilder("using Foundation"); } }
         #endregion

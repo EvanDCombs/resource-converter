@@ -11,8 +11,8 @@ namespace ResourcesConvert
     public class ConvertToShared : ConvertTo
     {
         #region Properties
-        protected override string ResourceFileName { get { return ""; } }
-        protected override string CSharpFileName { get { return "Strings"; } }
+        protected override string ResourceFileName { get { return "//"; } }
+        protected override string CSharpFileName { get { return "//Strings"; } }
         protected override string Folder { get { return "//Shared"; } }
         protected override string GetString { get { return "GetStringPartial(name, ref value"; } }
         protected override string ResourceFileExtention { get { return ""; } }
@@ -51,11 +51,13 @@ namespace ResourcesConvert
             sb.Replace(USING_STATEMENTS, UsingStatements.ToString());
 
             StringBuilder csharp = new StringBuilder();
+            int indent = 0;
             foreach (Dictionary<string, string> dictionary in resources)
             {
                 string key = dictionary[PROPERTY_NAME];
-                string generated = "public static string " + key + "{ get { return GetStringPartial(\"" + key + "\"); } }";
+                string generated = Indent(indent) + "public static string " + key + " { get { return GetStringPartial(\"" + key + "\"); } }";
                 csharp.AppendLine(generated);
+                indent = 2;
             }
             sb.Replace(CSHARP, csharp.ToString());
 
