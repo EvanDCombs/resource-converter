@@ -77,14 +77,14 @@ namespace ResourcesConvert
             Dictionary<string, StringBuilder>.KeyCollection languageKeys = Languages.Keys;
             for (int i = 0; i < languageKeys.Count; i++)
             {
-                Languages[languageKeys.ElementAt(i)] = CreateResourceFile(resources);
+                Languages[languageKeys.ElementAt(i)] = CreateResourceFile(resources, languageKeys.ElementAt(i));
             }
 
             StringBuilder cSharpFile = CreateCSharpFile(resources, nameSpace);
 
             SaveFiles(filepath, Languages, cSharpFile);
         }
-        protected virtual StringBuilder CreateResourceFile(List<Dictionary<string, string>> resources)
+        protected virtual StringBuilder CreateResourceFile(List<Dictionary<string, string>> resources, string language)
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("");
@@ -94,9 +94,10 @@ namespace ResourcesConvert
                 string key = dictionary[PROPERTY_NAME];
                 foreach (KeyValuePair<string, string> pair in dictionary)
                 {
-                    if (pair.Key != PROPERTY_NAME)
+                    if (pair.Key == language)
                     {
                         sb.AppendLine(GetResourceString(key, pair.Value));
+                        break;
                     }
                 }
             }

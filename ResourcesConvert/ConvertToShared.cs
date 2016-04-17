@@ -55,9 +55,16 @@ namespace ResourcesConvert
             foreach (Dictionary<string, string> dictionary in resources)
             {
                 string key = dictionary[PROPERTY_NAME];
-                string generated = Indent(indent) + "public static string " + key + " { get { return GetStringPartial(\"" + key + "\"); } }";
-                csharp.AppendLine(generated);
+                csharp.AppendLine(Indent(indent) + "public static string " + key);
                 indent = 2;
+                csharp.AppendLine(Indent(indent) + "{");
+                csharp.AppendLine(Indent(indent + 1) + "get");
+                csharp.AppendLine(Indent(indent + 1) + "{");
+                csharp.AppendLine(Indent(indent + 2) + "string value = \"\";");
+                csharp.AppendLine(Indent(indent + 2) + "GetStringPartial(\"" + key + "\", ref value);");
+                csharp.AppendLine(Indent(indent + 2) + "return value;");
+                csharp.AppendLine(Indent(indent + 1) + "}");
+                csharp.AppendLine(Indent(indent) + "}");
             }
             sb.Replace(CSHARP, csharp.ToString());
 
