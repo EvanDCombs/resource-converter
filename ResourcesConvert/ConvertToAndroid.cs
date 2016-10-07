@@ -21,7 +21,7 @@ namespace ResourcesConvert
         protected override string Folder { get { return "//Android"; } }
         protected override string GetString { get { return "value = Context.Resources.GetString(Context.Resources.GetIdentifier(name, \"string\", Context.PackageName));"; } }
         protected override string Dependencies { get { return "public static Context Context { get; set;}"; } }
-        protected override StringBuilder UsingStatements { get { return new StringBuilder("using Android.Content"); } }
+        protected override StringBuilder UsingStatements { get { return new StringBuilder("using Android.Content;"); } }
         #endregion
         #region Initialization
         private static ConvertToAndroid instance;

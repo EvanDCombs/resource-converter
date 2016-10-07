@@ -17,7 +17,7 @@ namespace ResourcesConvert
         protected override string Folder { get { return "//Shared"; } }
         protected override string GetString { get { return "GetStringPartial(name, ref value"; } }
         protected override string ResourceFileExtention { get { return ""; } }
-        protected override StringBuilder UsingStatements { get { return new StringBuilder("using System"); } }
+        protected override StringBuilder UsingStatements { get { return new StringBuilder("using System;"); } }
         #endregion
         #region Initialization
         private static ConvertToConvertable instance;
@@ -39,6 +39,7 @@ namespace ResourcesConvert
         {
             XmlScript xmlScript = new XmlScript();
             XmlElement rootElement = XmlScript.XmlRoot(xmlScript, "resource-list");
+            XmlScript.XmlAttribute(rootElement, "namespace", nameSpace);
             foreach (dynamic resource in resources)
             {
                 XmlElement resourceElement = XmlScript.XmlElement(xmlScript, rootElement, "resource");

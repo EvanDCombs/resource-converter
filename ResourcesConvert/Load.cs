@@ -7,12 +7,17 @@ namespace ResourcesConvert
 {
     public static class Load
     {
-        public static ObservableCollection<dynamic> ConvertableResource(string filepath)
+        public static ObservableCollection<dynamic> ConvertableResource(string filepath, ref string nameSpace)
         {
             XmlDocument xmlDocument = FileManager.RetrieveLocalXml(filepath);
             XPathNavigator xPathNavigator = xmlDocument.CreateNavigator();
             xPathNavigator.MoveToRoot();
             xPathNavigator.MoveToFirstChild(); //resource-list
+            if (xPathNavigator.MoveToFirstAttribute())
+            {
+                nameSpace = xPathNavigator.Value;
+                xPathNavigator.MoveToParent();
+            }
             if (xPathNavigator.MoveToFirstChild()) //resource
             {
                 ObservableCollection<dynamic> temp = new ObservableCollection<dynamic>();

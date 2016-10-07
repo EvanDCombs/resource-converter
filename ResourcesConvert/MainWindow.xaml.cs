@@ -41,7 +41,9 @@ namespace ResourcesConvert
                     break;
                 case "open":
                     currentFile = FileManager.OpenFileLocator(false, EXTENSION)[0];
-                    resources = Load.ConvertableResource(currentFile);
+                    string nameSpace = string.Empty;
+                    resources = Load.ConvertableResource(currentFile, ref nameSpace);
+                    namespaceTextBox.Text = nameSpace;
                     dataGrid.ItemsSource = resources;
                     SetComboBoxItems(Resource.PropertyNames);
                     break;
@@ -50,14 +52,14 @@ namespace ResourcesConvert
                     {
                         currentFile = FileManager.SaveFileLocator(EXTENSION);
                     }
-                    ConvertToConvertable.Instance.CreateFiles(currentFile, "", resources);
+                    ConvertToConvertable.Instance.CreateFiles(currentFile, namespaceTextBox.Text, resources);
                     break;
                 case "convert":
                     if (string.IsNullOrEmpty(currentFile))
                     {
                         currentFile = FileManager.SaveFileLocator(EXTENSION);
                     }
-                    ConvertToConvertable.Instance.CreateFiles(currentFile, "", resources);
+                    ConvertToConvertable.Instance.CreateFiles(currentFile, namespaceTextBox.Text, resources);
                     string folderPath = FileManager.OpenDirectoryLocator();
                     ConvertToAndroid.Instance.CreateFiles(folderPath, namespaceTextBox.Text, resources);
                     ConvertToiOS.Instance.CreateFiles(folderPath, namespaceTextBox.Text, resources);
@@ -159,11 +161,19 @@ namespace ResourcesConvert
             {
                 return;
             }
+            Point position = e.GetPosition(dataGrid);
             DataGridRow row = UIHelper.TryFindFromPoint<DataGridRow>((UIElement)sender, e.GetPosition(dataGrid));
             if (row != null)
             {
-                IsDragging = true;
-                DraggedItem = (dynamic)row.Item;
+                if (!row.IsNewItem)
+                {
+                    IsDragging = true;
+                    DraggedItem = (dynamic)row.Item;
+                }
+                else
+                {
+                    dataGrid.BeginEdit();
+                }
             }
         }
         private void dataGrid_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -172,15 +182,18 @@ namespace ResourcesConvert
             {
                 dataGrid.IsReadOnly = true;
                 DataGridRow row = UIHelper.TryFindFromPoint<DataGridRow>((UIElement)sender, e.GetPosition(dataGrid));
-                dynamic targetItem = (dynamic)row.Item;
-                if (targetItem != null && !ReferenceEquals(DraggedItem, targetItem))
+                if (row != null)
                 {
-                    int index = resources.IndexOf(targetItem);
-                    resources.Remove(DraggedItem);
-                    resources.Insert(index, DraggedItem);
+                    dynamic targetItem = (dynamic)row.Item;
+                    if (targetItem != null && !ReferenceEquals(DraggedItem, targetItem))
+                    {
+                        int index = resources.IndexOf(targetItem);
+                        resources.Remove(DraggedItem);
+                        resources.Insert(index, DraggedItem);
+                    }
                 }
+                ResetDragDrop();
             }
-            ResetDragDrop();
         }
         #endregion
     }

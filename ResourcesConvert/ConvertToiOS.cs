@@ -13,9 +13,10 @@ namespace ResourcesConvert
         protected override string ResourceFileName { get { return "//Localizable_"; } }
         protected override string CSharpFileName { get { return "//Strings"; } }
         protected override string Folder { get { return "//iOS"; } }
-        protected override string GetString { get { return "value = NSBundle.MainBundle.LocalizedString(\"name\", null);"; } }
+        protected override string GetString { get { return "value = LanguageBundle.LocalizedString(name, null);"; } }
+        protected override string Dependencies { get { return "public static NSBundle LanguageBundle { get; set; } = NSBundle.MainBundle;"; } }
         protected override string ResourceFileExtention { get { return STRINGS_EXTENSION; } }
-        protected override StringBuilder UsingStatements { get { return new StringBuilder("using Foundation"); } }
+        protected override StringBuilder UsingStatements { get { return new StringBuilder("using Foundation;"); } }
         #endregion
         #region Initialization
         private static ConvertToiOS instance;

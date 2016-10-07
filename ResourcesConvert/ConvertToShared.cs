@@ -16,7 +16,7 @@ namespace ResourcesConvert
         protected override string Folder { get { return "//Shared"; } }
         protected override string GetString { get { return "GetStringPartial(name, ref value"; } }
         protected override string ResourceFileExtention { get { return ""; } }
-        protected override StringBuilder UsingStatements { get { return new StringBuilder("using System"); } }
+        protected override StringBuilder UsingStatements { get { return new StringBuilder("using System;"); } }
         #endregion
         #region Initialization
         private static ConvertToShared instance;
